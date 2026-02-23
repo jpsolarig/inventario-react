@@ -1,44 +1,45 @@
 
-// Importamos el sistema de enrutamiento de React Router
+// Importamos las herramientas necesarias de React Router
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-// Importamos nuestras páginas
+// Importamos el Layout principal
+import AppLayout from "./components/AppLayout";
+// Importamos las páginas de la aplicación
 import Dashboard from "./pages/Dashboard";
 import Productos from "./pages/Productos";
 import Proveedores from "./pages/Proveedores";
 import Envios from "./pages/Envios";
-
 // Componente principal de la aplicación
 export default function App() {
   return (
-
-    // BrowserRouter habilita el sistema de rutas usando el historial del navegador
+    // BrowserRouter activa el sistema de navegación SPA
     <BrowserRouter>
-
-      {/* Routes agrupa todas las rutas de la aplicación */}
+      {/* Routes agrupa todas las rutas */}
       <Routes>
-
-        {/* Ruta principal "/" */}
-        {/* Cuando el usuario entra a la raíz del sitio, muestra el Dashboard */}
-        <Route path="/" element={<Dashboard />} />
-
-        {/* Ruta /productos */}
-        {/* Muestra la página de productos */}
-        <Route path="/productos" element={<Productos />} />
-
-        {/* Ruta /proveedores */}
-        {/* Muestra la página de pedidos a proveedores */}
-        <Route path="/proveedores" element={<Proveedores />} />
-
-        {/* Ruta /envios */}
-        {/* Muestra la página de envíos */}
-        <Route path="/envios" element={<Envios />} />
-
-        {/* Ruta comodín "*" */}
-        {/* Si el usuario escribe una ruta que no existe,
-            lo redirige automáticamente al Dashboard */}
+        {/* 
+          Ruta principal "/" 
+          Esta ruta envuelve TODA la aplicación con AppLayout.
+          Todo lo que esté dentro se renderizará dentro del <Outlet />
+        */}
+        <Route path="/" element={<AppLayout />}>
+          {/* 
+            Ruta index:
+            Representa la ruta "/"
+            Es la vista por defecto cuando entramos al sitio
+          */}
+          <Route index element={<Dashboard />} />
+          {/* Ruta hija: /productos */}
+          <Route path="productos" element={<Productos />} />
+          {/* Ruta hija: /proveedores */}
+          <Route path="proveedores" element={<Proveedores />} />
+          {/* Ruta hija: /envios */}
+          <Route path="envios" element={<Envios />} />
+        </Route>
+        {/* 
+          Ruta comodín "*"
+          Si el usuario escribe una URL que no existe,
+          lo redirige automáticamente al Dashboard
+        */}
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
     </BrowserRouter>
   );
