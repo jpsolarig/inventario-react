@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"; // importamos hooks
 import { productsMock } from "../data/products.mock"; // ahora usaremos mock desde data
 import SearchBar from "../components/SearchBar";
 import ProductList from "../components/ProductList";
+import useDebounce from "../hooks/useDebounce";
 
 export default function Productos() {
   // estado para el texto del buscador
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms de retraso
 
   // estado para lista filtrada (lo que se mostrará en pantalla)
   const [filteredProducts, setFilteredProducts] = useState(productsMock);
@@ -14,7 +16,7 @@ export default function Productos() {
   useEffect(() => {
     // Normalizamos el término de búsqueda
 
-    const term = searchTerm.trim().toLowerCase();
+    const term = debouncedSearchTerm.trim().toLowerCase();
 
     // Si no hay búsqueda, mostramos todo
     if (!term) {
@@ -36,7 +38,7 @@ export default function Productos() {
     });
 
     setFilteredProducts(filtered);
-  }, [searchTerm]); // dependencia => se ejecuta cuando cambia searchTerm
+  }, [debouncedSearchTerm]);
 
   return (
     <section>
