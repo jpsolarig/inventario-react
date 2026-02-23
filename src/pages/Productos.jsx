@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"; // importamos hooks
 import { productsMock } from "../data/products.mock"; // ahora usaremos mock desde data
+import SearchBar from "../components/SearchBar";
+import ProductList from "../components/ProductList";
 
 export default function Productos() {
   // estado para el texto del buscador
@@ -41,30 +43,10 @@ export default function Productos() {
       <h2>Listado de Productos</h2>
 
       {/* Buscador de productos */}
-      <input
-        type="text"
-        placeholder="Buscar por nombre, categoría o fabricante..."
-        value={searchTerm} // usa el estado creado
-        onChange={(e) => setSearchTerm(e.target.value)} // actualiza searchTerm
-      />
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <div>
-        {/* ahora renderizamos filteredProducts en lugar de productsMock */}
-        {filteredProducts.map((product) => (
-          <article key={product.id}>
-            <h3>{product.name}</h3>
-            <p>Categoría: {product.category}</p>
-            <p>Fabricante: {product.manufacturer}</p>
-            <p>Stock: {product.stock}</p>
-            <p>Precio: S/ {product.price}</p>
-            <hr />
-          </article>
-        ))}
-
-        {/* mensaje cuando no hay resultados */}
-        {filteredProducts.length === 0 && (
-          <p>No se encontraron productos con esa búsqueda.</p>
-        )}
+        <ProductList products={filteredProducts} />
       </div>
     </section>
   );
